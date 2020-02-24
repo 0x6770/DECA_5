@@ -935,10 +935,6 @@ refer to the applicable agreement for further details.
 	(pt 1248 80)
 )
 (connector
-	(pt 1248 80)
-	(pt 1256 80)
-)
-(connector
 	(pt 1256 344)
 	(pt 1256 104)
 )
@@ -955,4 +951,3 @@ refer to the applicable agreement for further details.
 (junction (pt 232 464))
 (junction (pt 1008 248))
 (junction (pt 1248 344))
-(junction (pt 1248 80))
