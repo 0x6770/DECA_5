@@ -1170,14 +1170,6 @@ refer to the applicable agreement for further details.
 	(bus)
 )
 (connector
-	(pt 312 200)
-	(pt 336 200)
-)
-(connector
-	(pt 336 200)
-	(pt 336 184)
-)
-(connector
 	(pt 208 208)
 	(pt 208 336)
 	(bus)
@@ -1283,6 +1275,18 @@ refer to the applicable agreement for further details.
 	(pt 128 240)
 	(pt 256 240)
 	(bus)
+)
+(connector
+	(pt 336 184)
+	(pt 328 184)
+)
+(connector
+	(pt 328 184)
+	(pt 328 200)
+)
+(connector
+	(pt 328 200)
+	(pt 312 200)
 )
 (junction (pt 256 456))
 (junction (pt 176 168))
