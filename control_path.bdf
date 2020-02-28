@@ -232,7 +232,7 @@ refer to the applicable agreement for further details.
 )
 (pin
 	(output)
-	(rect -32 176 144 192)
+	(rect 48 176 224 192)
 	(text "OUTPUT" (rect 135 0 175 10)(font "Arial" (font_size 6)))
 	(text "cnt_en" (rect 5 0 39 11)(font "Arial" ))
 	(pt 176 8)
@@ -1242,18 +1242,6 @@ refer to the applicable agreement for further details.
 	(bus)
 )
 (connector
-	(pt 144 184)
-	(pt 296 184)
-)
-(connector
-	(pt 296 248)
-	(pt 296 184)
-)
-(connector
-	(pt 296 184)
-	(pt 296 176)
-)
-(connector
 	(pt 840 456)
 	(pt 936 456)
 )
@@ -1583,6 +1571,18 @@ refer to the applicable agreement for further details.
 	(text "P" (rect 1160 80 1167 93)(font "Intel Clear" ))
 	(pt 1216 96)
 	(pt 1152 96)
+)
+(connector
+	(pt 296 184)
+	(pt 224 184)
+)
+(connector
+	(pt 296 176)
+	(pt 296 184)
+)
+(connector
+	(pt 296 184)
+	(pt 296 248)
 )
 (junction (pt 592 264))
 (junction (pt 592 408))

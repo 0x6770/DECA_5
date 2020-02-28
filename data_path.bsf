@@ -20,9 +20,9 @@ refer to the applicable agreement for further details.
 */
 (header "symbol" (version "1.2"))
 (symbol
-	(rect 16 16 256 208)
+	(rect 16 16 256 240)
 	(text "data_path" (rect 5 0 66 15)(font "Intel Clear" (font_size 8)))
-	(text "inst" (rect 8 175 29 188)(font "Intel Clear" ))
+	(text "inst" (rect 8 207 29 220)(font "Intel Clear" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -135,7 +135,28 @@ refer to the applicable agreement for further details.
 		(text "testr3q[15..0]" (rect 135 139 219 154)(font "Intel Clear" (font_size 8)))
 		(line (pt 240 144)(pt 224 144)(line_width 3))
 	)
+	(port
+		(pt 240 160)
+		(output)
+		(text "accen" (rect 0 0 37 15)(font "Intel Clear" (font_size 8)))
+		(text "accen" (rect 182 155 219 170)(font "Intel Clear" (font_size 8)))
+		(line (pt 240 160)(pt 224 160))
+	)
+	(port
+		(pt 240 176)
+		(output)
+		(text "rin[15..0]" (rect 0 0 56 15)(font "Intel Clear" (font_size 8)))
+		(text "rin[15..0]" (rect 163 171 219 186)(font "Intel Clear" (font_size 8)))
+		(line (pt 240 176)(pt 224 176)(line_width 3))
+	)
+	(port
+		(pt 240 192)
+		(output)
+		(text "clock2" (rect 0 0 40 15)(font "Intel Clear" (font_size 8)))
+		(text "clock2" (rect 179 187 219 202)(font "Intel Clear" (font_size 8)))
+		(line (pt 240 192)(pt 224 192))
+	)
 	(drawing
-		(rectangle (rect 16 16 224 176))
+		(rectangle (rect 16 16 224 208))
 	)
 )
