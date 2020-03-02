@@ -3,7 +3,7 @@ module decode(input FETCH,
               input EXEC2,
               input EQ,
               input MI,
-              input [3:0] IR,
+              input [15:0] IR,
               output EXTRA,
               output Wren,
               output MUX1,
@@ -17,18 +17,26 @@ module decode(input FETCH,
               output MUX3_useAllBits,
 	      output P
 );
-    
-    assign LDA = !IR[3] & !IR[2] & !IR[1] & !IR[0];
-    assign STA = !IR[3] & !IR[2] & !IR[1] & IR[0];
-    assign ADD = !IR[3] & !IR[2] & IR[1] & !IR[0];
-    assign SUB = !IR[3] & !IR[2] & IR[1] & IR[0];
-    assign JMP = !IR[3] & IR[2] & !IR[1] & !IR[0];
-    assign JMI = !IR[3] & IR[2] & !IR[1] & IR[0];
-    assign JEQ = !IR[3] & IR[2] & IR[1] & !IR[0];
-    assign STP = !IR[3] & IR[2] & IR[1] & IR[0];
-    assign LDI = IR[3] & !IR[2] & !IR[1] & !IR[0];
-    assign LSR = IR[3] & !IR[2] & IR[1] & !IR[0];
-    assign ASR = IR[3] & !IR[2] & IR[1] & IR[0];
+    // MU0 instruction  
+    assign LDA = !IR[15] & !IR[14] & !IR[13] & !IR[12];
+    assign STA = !IR[15] & !IR[14] & !IR[13] & IR[12];
+    assign ADD = !IR[15] & !IR[14] & IR[13] & !IR[12];
+    assign SUB = !IR[15] & !IR[14] & IR[13] & IR[12];
+    assign JMP = !IR[15] & IR[14] & !IR[13] & !IR[12];
+    assign JMI = !IR[15] & IR[14] & !IR[13] & IR[12];
+    assign JEQ = !IR[15] & IR[14] & IR[13] & !IR[12];
+    assign STP = !IR[15] & IR[14] & IR[13] & IR[12];
+    assign LDI = IR[15] & !IR[14] & !IR[13] & !IR[12];
+    assign LSR = IR[15] & !IR[14] & IR[13] & !IR[12];
+    assign ASR = IR[15] & !IR[14] & IR[13] & IR[12];
+   
+    // whether is ARM instruction
+    wire ARM = IR[15] & IR[14];
+    // ARMish opcode    
+    assign arm_ADD = ARM & !IR[6] & !IR[5] & !IR[4];
+    assign arm_SUB = ARM & !IR[6] & !IR[5] & IR[4];
+    assign arm_MOV = ARM & !IR[6] & IR[5] & !IR[4];
+    assign arm_XSR = ARM & !IR[6] & IR[5] & IR[4];
 
     assign P 		   = LDA | LDI | ADD | SUB | LSR | ASR | JMP | JMI | JEQ;
 
@@ -37,7 +45,7 @@ module decode(input FETCH,
     assign MUX1            = LDA & EXEC1 | STA & EXEC1 | ADD & EXEC1 | SUB & EXEC1;
     assign MUX3            = LDA & EXEC2 | LDI & EXEC1;
     assign PC_sload        = JMP & EXEC1 | JMI & EXEC1 & MI | JEQ & EXEC1 & EQ;
-    assign PC_cnt_en       = LDA & EXEC2 | STA & EXEC1 | ADD & EXEC2 | SUB & EXEC2 | JMI & EXEC1 & !MI | JEQ & EXEC1 & !EQ | LDI & EXEC1 | LSR & EXEC1 | ASR & EXEC1;
+    assign PC_cnt_en       = LDA & EXEC2 | STA & EXEC1 | ADD & EXEC2 | SUB & EXEC2 | JMI & EXEC1 & !MI | JEQ & EXEC1 & !EQ | LDI & EXEC1 | LSR & EXEC1 | ASR & EXEC1 | arm_ADD & EXEC1 | arm_SUB & EXEC1 | arm_MOV & EXEC1 | arm_XSR & EXEC1;
     assign ACC_EN          = LDA & EXEC2 | ADD & EXEC2 | SUB & EXEC2 | LDI & EXEC1 | LSR & EXEC1 | ASR & EXEC1;
     assign ACC_LOAD        = LDA & EXEC2 | ADD & EXEC2 | SUB & EXEC2 | LDI & EXEC1;
     assign ADDSUB          = ADD & EXEC2;
