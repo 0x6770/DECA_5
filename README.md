@@ -44,26 +44,26 @@
 
   <img src="https://tva1.sinaimg.cn/large/0082zybpgy1gc8ev3vckwj31e80u0tj6.jpg" alt="image-20200225015507794" style="zoom:25%;" />
 
-- [x] ##### Task 3. Use the data path test program from Lab 4 to check that your MU0 instructions still work with the register file taking the place of Acc.
+- [x] ##### Task 3. Implement a boolean expression in the Verilog ALU to control write enable of the new registers wenout when used by ARMish instructions. The registers are written in the EXEC1 cycle of every ARMish instruction - but must NOT be written during execution of normal MU0 instructions. Note that there is a separate enable r0wen that is used by the MU0 instructions to write to R0 (which takes the place of Acc).
+
+  ```verilog
+assign wenout = exec1 & (&code);
+  // &code return 1 iff code[0] and code[1] are both equal to 1
+  // wenout only return 1 when excutes ARMish code at EXEC1
+  ```
+
+  ![Rc7zEL](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/Rc7zEL.png)
+
+- [x] ##### Task 4. Use the data path test program from Lab 4 to check that your MU0 instructions still work with the register file taking the place of Acc.
 
   By comparing its IR/ACC/PC outputs with those from visual2deca, the CPU seems to be fine though a few problems were found. 
 
-  1. CPU did ADD twice while it should preform And nd DD and LSR indeed. 
-  2. The ACC output of the new CPU is zeros throughout the operation. 
-  3. The total time taken to run the code is faster than previously without pipelining but slower than previously with pipelining. 
-
-  The malfunction of ACC might due to the different instruction format. 
-
+  1. Since I haven’t implement the LSR instruction yet, the ACC outputs did not halved.  
+  
   <img src="https://tva1.sinaimg.cn/large/0082zybpgy1gc8ez7efmjj31760u0x2w.jpg" alt="Screenshot 2020-02-25 at 01.59.08" style="zoom:33%;" />
 
-  Without pipelining 
+- [ ] ##### Task 5. *Note Figure* *8* which is a quick reference allowing you to compose ARMish instructions in hex easily. Test your new ALU instructions, without Carry, using the text code provided.
 
-  ![image-20200225021531333](https://tva1.sinaimg.cn/large/0082zybpgy1gc8fg3lhhij31e80u0wkt.jpg)
+  
 
-  With pipelining
-
-  ![image-20200225022742378](https://tva1.sinaimg.cn/large/0082zybpgy1gc8fss7nbpj31e80u00yy.jpg)
-
-- [ ] ##### Task 4. *Note Figure* *8* which is a quick reference allowing you to compose ARMish instructions in hex easily. Test your new ALU instructions, without Carry, using the text code provided.
-
-- [ ] ##### Task 5. Implement a boolean expression in the Verilog ALU to control write enable of the new registers wenout when used by ARMish instructions. The registers are written in the EXEC1 cycle of every ARMish instruction.
+- [ ] ##### Task 6. Implement a boolean expression in the Verilog ALU to control write enable of the new registers wenout when used by ARMish instructions. The registers are written in the EXEC1 cycle of every ARMish instruction.
