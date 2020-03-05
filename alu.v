@@ -52,13 +52,17 @@ module alu (instruction,
     assign skipout 	 = 0;     		// dummy, to do: replace with correct logic
     assign skipen 	 = exec1;  		// correct timing, to do: add enable condition
     
-    always @(*) // do not change this line - it makes sure we have combinational logic
+    always @(*) // do not change this line -it makes sure we have combinational logic
     begin
         case (opinstr)
-            3'b000  : alusum = rddata + rsdata + cin;			// if OP = 000
-            3'b001  : alusum = rddata + ~rsdata + cin;		// if OP = 001
-            3'b010  : alusum = rsdata + cin;				// if OP = 010
-            3'b011  : alusum = {rsdata[0], shiftin, rsdata[15:1]};	// if OP = 011
+            // alusum is 17 bit so we must extend the two operands to 17 bits using 0
+            // otherwise Verilog default extension will sign-extend these inputs
+            // that create a subtle (not always obvious) error in carry out
+            // note that ~ is bit inversion operator.
+            3'b000 : alusum = {1'b0,rddata} + {1'b0,rsdata} + cin; // if OP = 000
+            3'b001 : alusum = {1'b0,rddata} + {1'b0,~rsdata} + cin; // if OP = 001
+            3'b010 : alusum = {1'b0,rsdata} + cin; // if OP = 010
+            3'b011 : alusum = {rsdata[0], shiftin, rsdata[15:1]}; // if OP = 011
             // to do (optional): add additional instructions as cases here
             // available cases: 3'b100,3'b101,3'b110, 3'b111
             default : alusum = 0;// default output for unimplemented OP values, do not change
