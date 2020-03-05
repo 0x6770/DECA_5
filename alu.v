@@ -16,7 +16,7 @@ module alu (instruction,
     input [15:0] rddata;      // Rd register data outputs
     input [15:0] rsdata;      // Rs register data outputs
     input carrystatus;        // the Q output from CARRY
-    inout skipstatus;         // the Q output from SKIP
+    input skipstatus;         // the Q output from SKIP
     
     output [15:0] aluout;	  // the ALU block output, written into Rd
     output carryout;	      // the CARRY out, D for CARRY flip flop
