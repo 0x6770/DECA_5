@@ -20,9 +20,9 @@ refer to the applicable agreement for further details.
 */
 (header "symbol" (version "1.2"))
 (symbol
-	(rect 16 16 224 208)
+	(rect 16 16 224 272)
 	(text "top" (rect 5 0 26 15)(font "Intel Clear" (font_size 8)))
-	(text "inst" (rect 8 175 29 188)(font "Intel Clear" ))
+	(text "inst" (rect 8 239 29 252)(font "Intel Clear" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -121,7 +121,35 @@ refer to the applicable agreement for further details.
 		(text "clock2" (rect 147 155 187 170)(font "Intel Clear" (font_size 8)))
 		(line (pt 208 160)(pt 192 160))
 	)
+	(port
+		(pt 208 176)
+		(output)
+		(text "carryen" (rect 0 0 46 15)(font "Intel Clear" (font_size 8)))
+		(text "carryen" (rect 141 171 187 186)(font "Intel Clear" (font_size 8)))
+		(line (pt 208 176)(pt 192 176))
+	)
+	(port
+		(pt 208 192)
+		(output)
+		(text "carryout" (rect 0 0 50 15)(font "Intel Clear" (font_size 8)))
+		(text "carryout" (rect 137 187 187 202)(font "Intel Clear" (font_size 8)))
+		(line (pt 208 192)(pt 192 192))
+	)
+	(port
+		(pt 208 208)
+		(output)
+		(text "skipen" (rect 0 0 42 15)(font "Intel Clear" (font_size 8)))
+		(text "skipen" (rect 145 203 187 218)(font "Intel Clear" (font_size 8)))
+		(line (pt 208 208)(pt 192 208))
+	)
+	(port
+		(pt 208 224)
+		(output)
+		(text "skipout" (rect 0 0 47 15)(font "Intel Clear" (font_size 8)))
+		(text "skipout" (rect 140 219 187 234)(font "Intel Clear" (font_size 8)))
+		(line (pt 208 224)(pt 192 224))
+	)
 	(drawing
-		(rectangle (rect 16 16 192 176))
+		(rectangle (rect 16 16 192 240))
 	)
 )
