@@ -43,7 +43,7 @@ module alu (instruction,
     assign aluout 	 = alusum [15:0]; 	// 16 normal bits from sum
     
     assign wenout	 = exec1 & (arm);	// correct timing, to do: add enable condition
-    assign carryen	 = exec1 & alucout & cwinstr & (arm);	// correct timing, to do: add enable condition
+    assign carryen	 = exec1 & cwinstr & (arm);	// correct timing, to do: add enable condition
     assign carryout	 = XSR ? rsdata[0] : alucout;		// this is correct
     // note the special case of rsdata[0] when OP = 011
     assign cin	 = cininstr[1] ? (cininstr[0] ? rsdata[15] : carryout) : (cininstr[0] ? 1 : 0);   		     	//* DONE dummy, to do: replace with correct logic
