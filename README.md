@@ -104,7 +104,7 @@ assign wenout = exec1 & (&code);
 
   
 
-- [ ] #### Task 6.Implement in the Verilog ALU the boolean expressions required to write CARRY as specified by the *S* bit in Figure 7. The necessary signals are:
+- [x] #### Task 6.Implement in the Verilog ALU the boolean expressions required to write CARRY as specified by the *S* bit in Figure 7. The necessary signals are:
 
   - [x] **cin**. The carry in to the ALU adder from **CIN** field.
   
@@ -136,7 +136,111 @@ assign wenout = exec1 & (&code);
     // if OP=011, then rsdata[0], else alucout
     ```
   
+    ###### Test CARRY
+    
+    ```mif
+    0 : 8123;
+    1 : C028;
+    2 : 8111;
+    3 : C02C;
+    4 : C00E;
+    // testing by adding 0xFFFF and 0x0001
+    5 : 0100;	// load 0xFFFF into R0
+    6 : C028;	// R2 = R0
+    7 : 8001; // load 0x0001 into R0
+    8 : C024; // R1 = R0
+    9 : C082;	// ADDS R0 := R0 + R2
+    a : 7000;
+    100 : FFFF;
+    ```
+    
+    ###### Test result
+    
+    The value of `R0` changed to `0x0000`  and the output of `carryff` changed to `1` at the end, so the result is correct.
+    
+    <img src="https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/QJ6i7J.png" style="zoom:25%;" />
+    
+    <img src='https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/87BI4V.png' alt='87BI4V' style="zoom:25%;"/>
+    
+  - [ ] Which of these four signals are don’t care for MU0 instructions, and outside EXEC1, and which must have defined values at all times?
+  
+    Only **carryen** needs correct timing. 
+  
+    
+  
     
   
   ![WUxZGR](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/WUxZGR.png)
+
+
+
+
+
+- [ ] #### **Task 7.** Test your ARMish instructions, with **CARRY**, as in lecture 11. Check that you can use the new instructions as suggested in TBL Class 6.
+  - [x] ##### Testing ARMish (1) – Data IN/OUT
+
+  ```assembly
+  // simple ADD tests
+  LDI 0x111						// R0 := 0x111 
+  ARM ADD R0 R0				// R0 := R0 + R0 (equiv: Acc := Acc + Acc)
+  LDI 0x123						// R0 := 0x123
+  ARM MOV R1 R0				// R1 := R0
+  LDI 0x234						// R0	:= 0x123
+  ARM ADD R1 R0				// R1 := 0x357 (R1 := R1 + R0)
+  ARM XSR R2 R1				// R2 := 0x1AB (R2 := R1 LSR 1)
+  
+  
+  LDA 0x100 					// load full 16 bit constant (0xFE22) into R0 
+  ARM CMSB XSR R0 R0 	// R0 := 0xFF11 (R0 := R0 ASR 1)
+  ARM XSR R0 R0 			// R0 := 0x7F88 (R0 := R0 LSR 1)
+  ARM CMSB XSR R0 R0 	// R0 := 0x3FC4 (R0 := R0 ASR 1)
+  ORG 0x100
+  DCW 0xFE22 					// Constant data loaded by LDA
+  ```
+
+  ```assembly
+  // mif content
+  0 : 8111;
+  1 : C000;
+  2 : 8123;
+  3 : C024;
+  4 : 8234;
+  5 : C004;
+  6 : C039;
+  7 : 0100;
+  8 : F030;
+  9 : C030;
+  a : F030;
+  b : 7000;
+  
+  100 : FE22;
+  ```
+
+  ###### Test result
+
+  The result is as expected. 
+
+  <img src='https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/AL6qcy.png' alt='AL6qcy' style="zoom:25%;" />
+
+  <img src='https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/InDRq1.png' alt='InDRq1' style="zoom:25%;" />
+
+- [ ] ##### Testing ARMish (2) CARRY in ADD/SUB
+
+  ```assembly
+  // R2:R0 := R2:R0 - R3:R1 - 1
+  ARM C0 S SUB R0 R1
+  ARM CC SUB R2 R3
+  // R2:R0 := R2:R0 + R3:R1 + 1 ARM C1 S ADD R0 R1
+  ARM CC ADD R2 R3
+  ```
+
+  ```assembly
+  0 : C091;
+  1 : E01B;
+  2 : D081;
+  3 : E008;
+  4 : 7000;
+  ```
+
+  
 
