@@ -46,7 +46,7 @@ module alu (instruction,
     assign carryen	 = exec1 & cwinstr & arm;              //  correct timing, to do: add enable condition
     assign carryout	 = arm & (XSR ? rsdata[0] : alucout);  //  this is correct
                                                                //  note the special case of rsdata[0] when OP = 011
-    assign cin	 = cininstr[1] ? (cininstr[0] ? rsdata[15] : carryout) : (cininstr[0] ? 1 : 0);   		     	//* DONE dummy, to do: replace with correct logic
+    assign cin	 = cininstr[1] ? (cininstr[0] ? rsdata[15] : carrystatus) : (cininstr[0] ? 1 : 0);   		     	//* DONE dummy, to do: replace with correct logic
     assign shiftin 	 = cin;     		// dummy, to do: replace with correct logic
     
     assign skipout 	 = 0;     		// dummy, to do: replace with correct logic
