@@ -59,6 +59,20 @@ refer to the applicable agreement for further details.
 		(line (pt 0 96)(pt 16 96))
 	)
 	(port
+		(pt 0 112)
+		(input)
+		(text "skipstatus" (rect 0 0 64 15)(font "Intel Clear" (font_size 8)))
+		(text "skipstatus" (rect 21 107 85 122)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 112)(pt 16 112))
+	)
+	(port
+		(pt 0 128)
+		(input)
+		(text "skipout" (rect 0 0 47 15)(font "Intel Clear" (font_size 8)))
+		(text "skipout" (rect 21 123 68 138)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 128)(pt 16 128))
+	)
+	(port
 		(pt 240 32)
 		(output)
 		(text "fetch" (rect 0 0 31 15)(font "Intel Clear" (font_size 8)))

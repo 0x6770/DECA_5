@@ -1,0 +1,27 @@
+%-------------MIF------------%
+
+DEPTH = 4096; % Memory depth and width are required %
+            % DEPTH is the number of addresses %
+WIDTH = 16; % WIDTH is the number of bits of data per word %
+            % DEPTH and WIDTH should be entered as decimal numbers %
+ADDRESS_RADIX = HEX; % Address and value radixes are required %
+DATA_RADIX = HEX;    % Enter BIN, DEC, HEX, OCT, or UNS % 
+CONTENT
+BEGIN
+[0..FFF]: 0; % default value is 0 %
+0 : 100;
+1 : 6009;
+2 : 101;
+3 : 2102;
+4 : 1101;
+5 : 100;
+6 : 3103;
+7 : 1100;
+8 : 4000;
+9 : 7000;
+100 : a;
+101 : 0;
+102 : 2;
+103 : 1;
+END
+%-------------MIF------------%

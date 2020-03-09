@@ -38,20 +38,52 @@ module alu (instruction,
     reg [16:0] alusum; //  the 17 bit sum, 1 extra bit so ALU carry out can be extracted
     wire cin;          //  The ALU carry input, determined from instruction as in ISA spec
     wire shiftin;      //  value shifted into bit 15 on XSR, determined as in ISA spec
+    wire alucout;
+    reg skipout;
+//    wire skipout;
     
     assign alucout 	 = alusum [16];   //  carry bit from sum, or shift if OP = 011
     assign aluout 	 = alusum [15:0]; //  16 normal bits from sum
     
-    assign wenout	 = exec1 & arm;                        //  correct timing, to do: add enable condition
-    assign carryen	 = exec1 & cwinstr & arm;              //  correct timing, to do: add enable condition
+    assign wenout	 = exec1 & arm & !skipstatus;                        //  correct timing, to do: add enable condition
+    assign carryen	 = exec1 & cwinstr & arm & !skipstatus;              //  correct timing, to do: add enable condition
     assign carryout	 = arm & (XSR ? rsdata[0] : alucout);  //  this is correct
                                                                //  note the special case of rsdata[0] when OP = 011
     assign cin	 = cininstr[1] ? (cininstr[0] ? rsdata[15] : carrystatus) : (cininstr[0] ? 1 : 0);   		     	//* DONE dummy, to do: replace with correct logic
     assign shiftin 	 = cin;     		// dummy, to do: replace with correct logic
     
-    assign skipout 	 = 0;     		// dummy, to do: replace with correct logic
+//    assign skipout 	 = 0;     		// dummy, to do: replace with correct logic
     assign skipen 	 = exec1;  		// correct timing, to do: add enable condition
     
+//    assign skipout = condinstr[3] ? condinstr[2] ? condinstr[1] ? condinstr[0] ? 0 
+//    									       : 0 
+//    								: condinstr[0] ? 0
+//									       : 0 
+//    						 : condinstr[1] ? condinstr[0] ? 0 
+//    									       : 0 
+//    								: condinstr[0] ? 0
+//									       : 0 
+//    				  : condinstr[2] ? condinstr[1] ? condinstr[0] ? 0 
+//    									       : 0 
+//    								: condinstr[0] ? 0
+//									       : 0 
+//    						 : condinstr[1] ? condinstr[0] ? alucout  & !skipstatus & arm
+//    									       : !alucout & !skipstatus & arm
+//    								: condinstr[0] ? 1        & !skipstatus & arm
+//									       : 0        & !skipstatus & arm;
+ 
+
+    always @(*) // do not change this line -it makes sure we have combinational logic
+    begin
+       case (condinstr)
+            4'b0000 : skipout = 1'b0     & !skipstatus & arm;
+            4'b0001 : skipout = 1'b1     & !skipstatus & arm;
+            4'b0010 : skipout = !alucout & !skipstatus & arm;
+            4'b0011 : skipout = alucout  & !skipstatus & arm;
+            4'b0100 : skipout = !rsdata  & !skipstatus & arm;
+            default : skipout = 1'b0     & !skipstatus;
+    	endcase;
+    end
     always @(*) // do not change this line -it makes sure we have combinational logic
     begin
         case (opinstr)
