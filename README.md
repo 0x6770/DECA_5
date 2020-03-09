@@ -176,7 +176,7 @@ assign wenout = exec1 & (&code);
 
 
 
-- [ ] #### **Task 7.** Test your ARMish instructions, with **CARRY**, as in lecture 11. Check that you can use the new instructions as suggested in TBL Class 6.
+- [x] #### **Task 7.** Test your ARMish instructions, with **CARRY**, as in lecture 11. Check that you can use the new instructions as suggested in TBL Class 6.
   - [x] ##### Testing ARMish (1) – Data IN/OUT
 
   ```assembly
@@ -224,23 +224,131 @@ assign wenout = exec1 & (&code);
 
   <img src='https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/InDRq1.png' alt='InDRq1' style="zoom:25%;" />
 
-- [ ] ##### Testing ARMish (2) CARRY in ADD/SUB
 
-  ```assembly
-  // R2:R0 := R2:R0 - R3:R1 - 1
-  ARM C0 S SUB R0 R1
-  ARM CC SUB R2 R3
-  // R2:R0 := R2:R0 + R3:R1 + 1 ARM C1 S ADD R0 R1
-  ARM CC ADD R2 R3
+
+- [x] #### Task 8. Implement in the ALU logic as detailed in Figure *8* *that writes* *SKIP* to 1 when the next instruction must be skipped, as specified by the *COND* field. *SKIP* should be written only during *EXEC1*, and if *SKIP* is 1 (for an instruction being skipped), it should always be written 0 regardless of *COND.*
+
+  ```verilog
+  case (condinstr)
+    4'b0000 : skipout = 1'b0     & !skipstatus & arm;
+    4'b0001 : skipout = 1'b1     & !skipstatus & arm;
+    4'b0010 : skipout = !alucout & !skipstatus & arm;
+    4'b0011 : skipout = alucout  & !skipstatus & arm;
+    default : skipout = 1'b0     & !skipstatus;
+  endcase;
+  ```
+
+- [x] #### Task 9. Add logic (a few AND gates) to ensure that when SKIP is high nothing happens:
+
+  - [x] wen and r0wen are 0
+
+    ```verilog
+    assign wenout = exec1 & arm & !skipstatus;
+    ```
+
+  - [x] PC sload is 0
+
+    ```verilog
+    assign PC_sload = JMP & EXEC1 & !skipstatus | JMI & EXEC1 & MI & !skipstatus | JEQ & EXEC1 & EQ & !skipstatus;
+    ```
+
+  - [x] RAM wren is 0
+
+    ```verilog
+    assign Wren = STA & EXEC1 & !skipstatus;
+    ```
+
+  - [x] CARRY cannot change its value.
+
+    ```verilog
+    assign carryen = exec1 & cwinstr & arm & !skipstatus;
+    ```
+
+- [x] #### Task 10. For instructions with h2 = 0 *SKIP* will always be 0 and have no effect. Using such instructions, and a test program which implements *R0:R1 := R0:R1 + R2:R3* as suggested in the TBL classes to test your new instructions with *CARRY*, *CIN* functionality!
+
+  - [x] ##### Testing ARMish (2) CARRY in ADD/SUB
+
+    ![8ls5Fs](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/8ls5Fs.png)
+
+    The values stored in `r0` and `r2` are changed to `0xFFFF` and changed back to `0x0000` as expected. 
+    
+    ```verilog
+    3'b001 : alusum = {1'b0,rddata} + {1'b0,~rsdata} + cin; // if OP = 001 subtraction
+    ```
+    
+    ```assembly
+      // R2:R0 := R2:R0 - R3:R1 - 1
+      ARM C0 S SUB R0 R1
+      ARM CC SUB R2 R3
+      // R2:R0 := R2:R0 + R3:R1 + 1 ARM C1 S ADD R0 R1
+      ARM CC ADD R2 R3
+    ```
+    
+    ```assembly
+      0 : C091;
+      1 : E01B;
+      2 : D081;
+      3 : E008;
+      4 : 7000;
+    ```
+    
+    ![kHS9oj](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/kHS9oj.png)
+
+- [x] #### **Task 11.** Optional. Work out instructions (perhaps based on TBL Class questions) to test *COND* *and* *SKIP*.
+
+  ```verilog
+  case (condinstr)
+    // self added COND
+  	4'b0100 : skipout = !rsdata & !skipstatus & arm; // skip if Rs = 0
+  endcase;
   ```
 
   ```assembly
-  0 : C091;
-  1 : E01B;
-  2 : D081;
-  3 : E008;
-  4 : 7000;
-  ```
-
+  LDA 0x101
+  MOV R1 R0
+  LDA	0x100
+  # R0:R1 = 0x12345678
+  # R0:R1 := LSR 1 util R0 is 0x0000
   
+  # <<< start
+  ADD C0 AL S R1 R1
+  ADD CC CC S R1 R1 # skip if Rs = 0
+  JMP 3 # Jump to the start of the loop
+  # end >>>
+  
+  LDA 0x101
+  MOV R1 R0
+  LDA	0x100
+  # R0:R1 = 0x12345678
+  # R0:R1 := ASR 1 util R0 is 0x0000
+  
+  # <<< start
+  XSR CMSB AL S R0 R0
+  XSR CC CC S R1 R1 # skip if Rs = 0
+  JMP 9 # Jump to the start of the loop
+  # end >>>
+  
+  STP
+  ```
 
+  ```assembly
+  0 : 0101;
+  1 : C024;
+  2 : 0100;
+  3 : C085;
+  4 : E480;
+  5 : 4003;
+  6 : 0101;
+  7 : C024;
+  8 : 0100;
+  9 : F0B0;
+  a : E4B5;
+  b : 4009;
+  c : 7000;
+  100 : 1234;
+  101 : 5678;
+  ```
+
+  ![image-20200309021903285](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/image-20200309021903285.png)
+
+  ![image-20200309022059578](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/image-20200309022059578.png)
