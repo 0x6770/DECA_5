@@ -1,15 +1,19 @@
-module alu (instruction,
-            rddata,
-            rsdata,
-            carrystatus,
-            skipstatus,
-            exec1,
-            aluout,
-            carryout,
-            skipout,
-            carryen,
-            skipen,
-            wenout);
+module alu (instruction ,
+            rddata      ,
+            rsdata      ,
+            carrystatus ,
+            skipstatus  ,
+            exec1       ,
+            aluout      ,
+            carryout    ,
+            skipout     ,
+            carryen     ,
+            skipen      ,
+            wenout	,
+	    cout	,
+	    exec2	,
+	    xskip
+    );
     
     input [15:0] instruction; // from IR'
     input exec1;              // timing signal: when things happen
@@ -17,6 +21,8 @@ module alu (instruction,
     input [15:0] rsdata;      // Rs register data outputs
     input carrystatus;        // the Q output from CARRY
     input skipstatus;         // the Q output from SKIP
+    input exec2;
+    input xskip;
     
     output [15:0] aluout; //  the ALU block output, written into Rd
     output carryout;      //  the CARRY out, D for CARRY flip flop
@@ -24,6 +30,7 @@ module alu (instruction,
     output carryen;       //  the enable signal for CARRY flip-flop
     output skipen;        //  the enable signal for SKIP flip-flop
     output wenout;        //  the enable for writing Rd in the register file
+    output cout;
     
     // these wires are for convenience to make logic easier to see
     wire [2:0] opinstr   = instruction [6:4];	// OP field from IR'
@@ -44,6 +51,8 @@ module alu (instruction,
     
     assign alucout 	 = alusum [16];   //  carry bit from sum, or shift if OP = 011
     assign aluout 	 = alusum [15:0]; //  16 normal bits from sum
+
+    assign cout 	 = alucout;
     
     assign wenout	 = exec1 & arm & !skipstatus;                        //  correct timing, to do: add enable condition
     assign carryen	 = exec1 & cwinstr & arm & !skipstatus;              //  correct timing, to do: add enable condition
@@ -53,25 +62,7 @@ module alu (instruction,
     assign shiftin 	 = cin;     		// dummy, to do: replace with correct logic
     
 //    assign skipout 	 = 0;     		// dummy, to do: replace with correct logic
-    assign skipen 	 = exec1;  		// correct timing, to do: add enable condition
-    
-//    assign skipout = condinstr[3] ? condinstr[2] ? condinstr[1] ? condinstr[0] ? 0 
-//    									       : 0 
-//    								: condinstr[0] ? 0
-//									       : 0 
-//    						 : condinstr[1] ? condinstr[0] ? 0 
-//    									       : 0 
-//    								: condinstr[0] ? 0
-//									       : 0 
-//    				  : condinstr[2] ? condinstr[1] ? condinstr[0] ? 0 
-//    									       : 0 
-//    								: condinstr[0] ? 0
-//									       : 0 
-//    						 : condinstr[1] ? condinstr[0] ? alucout  & !skipstatus & arm
-//    									       : !alucout & !skipstatus & arm
-//    								: condinstr[0] ? 1        & !skipstatus & arm
-//									       : 0        & !skipstatus & arm;
- 
+    assign skipen 	 = xskip ? exec2 : exec1;  		// correct timing, to do: add enable condition
 
     always @(*) // do not change this line -it makes sure we have combinational logic
     begin
@@ -84,6 +75,7 @@ module alu (instruction,
             default : skipout = 1'b0     & !skipstatus;
     	endcase;
     end
+
     always @(*) // do not change this line -it makes sure we have combinational logic
     begin
         case (opinstr)

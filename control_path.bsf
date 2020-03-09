@@ -198,6 +198,13 @@ refer to the applicable agreement for further details.
 		(text "preAdd[11..0]" (rect 135 299 219 314)(font "Intel Clear" (font_size 8)))
 		(line (pt 240 304)(pt 224 304)(line_width 3))
 	)
+	(port
+		(pt 240 320)
+		(output)
+		(text "xskip" (rect 0 0 31 15)(font "Intel Clear" (font_size 8)))
+		(text "xskip" (rect 188 315 219 330)(font "Intel Clear" (font_size 8)))
+		(line (pt 240 320)(pt 224 320))
+	)
 	(drawing
 		(rectangle (rect 16 16 224 336))
 	)
