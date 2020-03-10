@@ -52,7 +52,7 @@ module decode(input FETCH            ,
     assign MUX1            = LDA & EXEC1 | STA & EXEC1 | ADD & EXEC1 | SUB & EXEC1;
     assign MUX3            = LDA & EXEC2 | LDI & EXEC1;
     assign PC_sload        = JMP & EXEC1 & !skipstatus | JMI & EXEC1 & MI & !skipstatus | JEQ & EXEC1 & EQ & !skipstatus;
-    assign PC_cnt_en       = LDA & EXEC2 | STA & EXEC1 | ADD & EXEC2 | SUB & EXEC2 | JMI & EXEC1 & !MI | JEQ & EXEC1 & !EQ | LDI & EXEC1 | LSR & EXEC1 | ASR & EXEC1 | arm_ADD & EXEC1 | arm_SUB & EXEC1 | arm_MOV & EXEC1 | arm_XSR & EXEC1 | JMP & EXEC1 & skipstatus | STP & EXEC1 & skipstatus;
+    assign PC_cnt_en       = LDA & EXEC2 | STA & EXEC1 | ADD & EXEC2 | SUB & EXEC2 | JMI & EXEC1 & !MI | JEQ & EXEC1 & !EQ | LDI & EXEC1 | LSR & EXEC1 | ASR & EXEC1 | arm_ADD & EXEC1 | arm_SUB & EXEC1 | arm_MOV & EXEC1 | arm_XSR & EXEC1 | JMP & EXEC1 & skipstatus | STP & EXEC1 & skipstatus | JMI & EXEC1 & MI & skipstatus | JEQ & EXEC1 & EQ & skipstatus;
     assign ACC_EN          = LDA & EXEC2 & !skipstatus | ADD & EXEC2 & !skipstatus | SUB & EXEC2 & !skipstatus | LDI & EXEC1 & !skipstatus | LSR & EXEC1 & !skipstatus | ASR & EXEC1 & !skipstatus ;
     assign ACC_LOAD        = LDA & EXEC2 & !skipstatus | ADD & EXEC2 & !skipstatus | SUB & EXEC2 & !skipstatus | LDI & EXEC1 & !skipstatus ;
     assign ADDSUB          = ADD & EXEC2 & !skipstatus ;
