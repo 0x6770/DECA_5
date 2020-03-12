@@ -16,7 +16,8 @@ badd +1 lab5_task7.mif
 badd +1 lab5_task7_2.mif
 badd +1 undotree_2
 badd +1 diffpanel_3
-badd +0 lab5_task10.mif
+badd +13 lab5_task10.mif
+badd +0 lab5_task11.mif
 argglobal
 silent! argdel *
 argadd decode.v
@@ -37,13 +38,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 93 - ((24 * winheight(0) + 17) / 35)
+let s:l = 93 - ((25 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 93
 normal! 09|
-tabedit lab5_task10.mif
+tabedit lab5_task11.mif
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -59,12 +60,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 13 - ((12 * winheight(0) + 17) / 35)
+let s:l = 22 - ((21 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-13
-normal! 05|
+22
+normal! 0
 tabedit decode.v
 set splitbelow splitright
 set nosplitbelow
@@ -81,14 +82,14 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 56 - ((29 * winheight(0) + 17) / 35)
+let s:l = 56 - ((30 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 56
 normal! 08|
 lcd ~/nfshome/DECA_5
-tabnext 1
+tabnext 2
 set stal=1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
