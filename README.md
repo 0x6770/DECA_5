@@ -304,51 +304,44 @@ assign wenout = exec1 & (&code);
   ```
 
   ```assembly
-  LDA 0x101
-  MOV R1 R0
-  LDA	0x100
-  # R0:R1 = 0x12345678
-  # R0:R1 := LSR 1 util R0 is 0x0000
+  LDA 0x101 		# R0 = mem[0x101] (0x1234)
+  MOV NV R1 R0	# R1 = R0, skip next instruction
+  LDA	0xCCC			# R1 = mem[0xCCC] (would be skipped)
+  LDA 0x100			# R0 = mem[0x100] (0x5000)
   
   # <<< start
   ADD C0 AL S R1 R1
   ADD CC CC S R1 R1 # skip if Rs = 0
-  JMP 3 # Jump to the start of the loop
+  JMP 4 # Jump to the start of the loop
   # end >>>
   
-  LDA 0x101
-  MOV R1 R0
-  LDA	0x100
-  # R0:R1 = 0x12345678
-  # R0:R1 := ASR 1 util R0 is 0x0000
-  
-  # <<< start
-  XSR CMSB AL S R0 R0
-  XSR CC CC S R1 R1 # skip if Rs = 0
-  JMP 9 # Jump to the start of the loop
-  # end >>>
+  SUB C0 AL	S C0 C1		# C0 := C0 - C1
+  SUB CC CC S C2 C3		# C2 := C2 - C3 skip if Cout = 1
+  LDI	0x999						# C0 = 0x999
   
   STP
   ```
-
+  
   ```assembly
   0 : 0101;
-  1 : C024;
-  2 : 0100;
-  3 : C085;
-  4 : E480;
-  5 : 4003;
-  6 : 0101;
-  7 : C024;
-  8 : 0100;
-  9 : F0B0;
-  a : E4B5;
-  b : 4009;
-  c : 7000;
+  1 : C124;
+  2 : 0ccc;
+  3 : 0100;
+  4 : C085;
+  5 : E480;
+  6 : 4004;
+7 : C091;
+  8 : D31B;
+9 : 8999;
+  a : 7000;
   100 : 1234;
-  101 : 5678;
+  101 : 5000;
+  ccc : dddd;
   ```
+  
+  ![image-20200312010751761](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/image-20200312010751761.png)
+  
+  ![image-20200312010827798](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/image-20200312010827798.png)
+  
+  ![image-20200312011604233](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/image-20200312011604233.png)
 
-  ![image-20200309021903285](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/image-20200309021903285.png)
-
-  ![image-20200309022059578](https://cdn.jsdelivr.net/gh/Ouikujie/image@master/Mac/image-20200309022059578.png)
